@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import React from "react";
+import React, { useState } from "react";
 import TodoInput from "./components/TodoInput";
 import CompleteAllCheckBox from "./components/CompleteAllCheckBox";
 import TodoItem from "./components/TodoItem";
@@ -8,6 +8,7 @@ import TodoFilter from "./components/TodoFilter";
 
 function App() {
   // https://todomvc.com/examples/react/#/
+  const [todoList, setTodoList] = useState(["테스트", "토끼"]);
 
   return (
     <section className="todoapp">
@@ -19,8 +20,9 @@ function App() {
         <section className="main">
           <CompleteAllCheckBox />
           <ul className="todo-list">
-            <TodoItem text={"테스트"} />
-            <TodoItem text={"토끼"} />
+            {todoList.map((todo) => (
+              <TodoItem text={todo} />
+            ))}
           </ul>
         </section>
         <footer className="footer">
