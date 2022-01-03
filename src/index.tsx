@@ -5,6 +5,7 @@ import CompleteAllCheckBox from "./components/CompleteAllCheckBox";
 import TodoItem from "./components/TodoItem";
 import TodoCount from "./components/TodoCount";
 import TodoFilter from "./components/TodoFilter";
+import "./style.css";
 
 function App() {
   // https://todomvc.com/examples/react/#/
