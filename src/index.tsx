@@ -9,7 +9,10 @@ import "./style.css";
 
 function App() {
   // https://todomvc.com/examples/react/#/
-  const [todoList, setTodoList] = useState(["테스트", "토끼"]);
+  const [todoList, setTodoList] = useState([
+    { text: "테스트", completed: false },
+    { text: "춤추기", completed: true },
+  ]);
 
   return (
     <section className="todoapp">
@@ -22,7 +25,7 @@ function App() {
           <CompleteAllCheckBox />
           <ul className="todo-list">
             {todoList.map((todo) => (
-              <TodoItem text={todo} />
+              <TodoItem key={todo.text} {...todo} />
             ))}
           </ul>
         </section>

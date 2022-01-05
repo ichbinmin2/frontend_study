@@ -2,13 +2,14 @@ import React from "react";
 
 interface TodoItemProps {
   text: string;
+  completed: boolean;
 }
 
-function TodoItem({ text }: TodoItemProps) {
+function TodoItem({ text, completed }: TodoItemProps) {
   return (
-    <li className="">
+    <li className={completed ? "completed" : ""}>
       <div className="view">
-        <input className="toggle" type="checkbox" />
+        <input className="toggle" type="checkbox" checked={completed} />
         <label>{text}</label>
         <button className="destroy"></button>
       </div>
