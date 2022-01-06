@@ -77,7 +77,9 @@ function App() {
           </ul>
         </section>
         <footer className="footer">
-          <TodoCount />
+          <TodoCount
+            count={todoList.filter((todo) => !todo.completed).length}
+          />
           <TodoFilter />
         </footer>
       </div>
