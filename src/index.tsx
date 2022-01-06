@@ -48,6 +48,14 @@ function App() {
     console.log("targetId :", targetId);
   }
 
+  function completeTodoItem(targetId: string) {
+    setTodoList((old) =>
+      old.map((todo) =>
+        todo.id === targetId ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  }
+
   return (
     <section className="todoapp">
       <div>
@@ -59,7 +67,12 @@ function App() {
           <CompleteAllCheckBox />
           <ul className="todo-list">
             {todoList.map((todo) => (
-              <TodoItem key={todo.id} {...todo} deleteTodo={deleteTodoItem} />
+              <TodoItem
+                key={todo.id}
+                {...todo}
+                deleteTodo={deleteTodoItem}
+                completeTodo={completeTodoItem}
+              />
             ))}
           </ul>
         </section>
