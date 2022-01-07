@@ -24,8 +24,6 @@ function App() {
 
   const [todoList, setTodoList] = useState<Todo[]>(initialState);
 
-  console.log(todoList);
-
   function addTodo(todoInput: string) {
     const newTodoItem = {
       id: Uuid(),
@@ -38,16 +36,22 @@ function App() {
 
     setTodoList((old) => [...old, newTodoItem]);
   }
-
   // 인간에게는 매우 빠른 시간이지만...
   // 리액트 스케쥴러가 상태를 변경
   // 상태가 변경되니 컴포넌트를 리렌더
 
+  // todo item 지우기
   function deleteTodoItem(targetId: string) {
     setTodoList((old) => old.filter((todo) => todo.id !== targetId));
     console.log("targetId :", targetId);
   }
 
+  // 완료된 todo item 모두 지우기
+  function clearCompleted() {
+    setTodoList((old) => old.filter((todo) => !todo.completed));
+  }
+
+  // 완료된 todo item 체크하기
   function completeTodoItem(targetId: string) {
     setTodoList((old) =>
       old.map((todo) =>
@@ -55,6 +59,8 @@ function App() {
       )
     );
   }
+
+  const itemLeftCount = todoList.filter((todo) => !todo.completed).length;
 
   return (
     <section className="todoapp">
@@ -77,10 +83,11 @@ function App() {
           </ul>
         </section>
         <footer className="footer">
-          <TodoCount
-            count={todoList.filter((todo) => !todo.completed).length}
-          />
+          <TodoCount count={itemLeftCount} />
           <TodoFilter />
+          <button className="clear-completed" onClick={clearCompleted}>
+            Clear completed
+          </button>
         </footer>
       </div>
     </section>
