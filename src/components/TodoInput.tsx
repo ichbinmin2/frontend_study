@@ -26,6 +26,7 @@ function TodoInput({ addTodo }: TodoInputProps) {
       placeholder="What needs to be done?"
       onChange={handleChange}
       onKeyUp={handleKeyUp}
+      value={todoInput}
     />
   );
 }

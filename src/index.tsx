@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TodoInput from "./components/TodoInput";
 import CompleteAllCheckBox from "./components/CompleteAllCheckBox";
 import TodoItem from "./components/TodoItem";
@@ -14,17 +14,36 @@ type Todo = {
   completed: boolean;
 };
 
+const initialState = [
+  { id: Uuid(), text: "전화하기", completed: false },
+  { id: Uuid(), text: "책 읽기", completed: true },
+];
+
+const KEY = "TODO-LIST";
+
 function useTodoList() {
   // github.com/twinstae/realworld-react-redux/tree/main/todoMVC-react
 
   // https://todomvc.com/examples/react/#/
 
-  const initialState = [
-    { id: Uuid(), text: "전화하기", completed: false },
-    { id: Uuid(), text: "책 읽기", completed: true },
-  ];
-
   const [todoList, setTodoList] = useState<Todo[]>(initialState);
+
+  useEffect(() => {
+    // 저장된 데이터를 불러오기
+    // localStorage에서 getItem
+    const saved = localStorage.getItem(KEY);
+    if (saved) {
+      // 문자열 => 객체로 복원 : JSON.parse
+      setTodoList(JSON.parse(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    // todoList가 바뀔 때마다, 바뀐 todoList를 저장
+    // localStorage에서 setItem
+    // 객체 => 문자열 : JSON.stringify
+    localStorage.setItem(KEY, JSON.stringify(todoList));
+  }, [todoList]);
 
   function addTodo(todoInput: string) {
     const newTodoItem = {
