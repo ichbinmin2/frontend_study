@@ -7,6 +7,7 @@ import TodoCount from "./components/TodoCount";
 import TodoFilter from "./components/TodoFilter";
 import "./style.css";
 import Uuid from "./uuid";
+import produce from "immer";
 
 type Todo = {
   id: string;
@@ -22,28 +23,20 @@ const initialState = [
 const KEY = "TODO-LIST";
 
 function useTodoList() {
-  // github.com/twinstae/realworld-react-redux/tree/main/todoMVC-react
+  // <https://github.com/twinstae/realworld-react-redux/commit/6326e03a5b9aee9dc711df260d470bb65829fa93#diff-e8d077acbe70741eb0e73c7919822d3931e52a385a15622eddd9e7123b7e81d9>
 
-  // https://todomvc.com/examples/react/#/
+  // <https://todomvc.com/examples/react/#/>
 
   const [todoList, setTodoList] = useState<Todo[]>(initialState);
 
   useEffect(() => {
-    // 저장된 데이터를 불러오기
-    // localStorage에서 getItem
     const saved = localStorage.getItem(KEY);
-    if (saved) {
-      // 문자열 => 객체로 복원 : JSON.parse
-      setTodoList(JSON.parse(saved));
-    }
-  }, []);
+    saved && setTodoList(JSON.parse(saved));
+  }, []); // 불러오기
 
   useEffect(() => {
-    // todoList가 바뀔 때마다, 바뀐 todoList를 저장
-    // localStorage에서 setItem
-    // 객체 => 문자열 : JSON.stringify
     localStorage.setItem(KEY, JSON.stringify(todoList));
-  }, [todoList]);
+  }, [todoList]); // 저장하기
 
   function addTodo(todoInput: string) {
     const newTodoItem = {
@@ -74,10 +67,26 @@ function useTodoList() {
 
   // 완료된 todo item 체크하기
   function completeTodoItem(targetId: string) {
-    setTodoList((old) =>
-      old.map((todo) =>
-        todo.id === targetId ? { ...todo, completed: !todo.completed } : todo
-      )
+    setTodoList(
+      produce((old) => {
+        const targetTodo = old.find((todo) => todo.id === targetId);
+
+        if (targetTodo) {
+          targetTodo.completed = !targetTodo.completed;
+        }
+      })
+    );
+  }
+
+  function changeTodoItem(targetId: string, newText: string) {
+    setTodoList(
+      produce((old) => {
+        const targetTodo = old.find((todo) => todo.id === targetId);
+
+        if (targetTodo) {
+          targetTodo.text = newText;
+        }
+      })
     );
   }
 
@@ -90,6 +99,7 @@ function useTodoList() {
     completeTodoItem,
     itemLeftCount,
     clearCompleted,
+    changeTodoItem,
   };
 }
 
@@ -101,6 +111,7 @@ function App() {
     completeTodoItem,
     itemLeftCount,
     clearCompleted,
+    changeTodoItem,
   } = useTodoList();
 
   return (
@@ -119,6 +130,7 @@ function App() {
                 {...todo}
                 deleteTodo={deleteTodoItem}
                 completeTodo={completeTodoItem}
+                changeTodoItem={changeTodoItem}
               />
             ))}
           </ul>
