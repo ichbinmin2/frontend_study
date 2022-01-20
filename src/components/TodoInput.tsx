@@ -1,10 +1,8 @@
 import React, { useState } from "react";
+import { useTodoListAtom } from "../useTodoListAtom";
 
-interface TodoInputProps {
-  addTodo: (todoInput: string) => void;
-}
-
-function TodoInput({ addTodo }: TodoInputProps) {
+function TodoInput() {
+  const { addTodo } = useTodoListAtom();
   // todoInput state
   const [todoInput, setTodoInput] = useState("");
   // handleChange

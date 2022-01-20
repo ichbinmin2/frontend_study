@@ -1,13 +1,11 @@
 import React from "react";
+import { useTodoListAtom } from "../useTodoListAtom";
 
-type Count = {
-  count: number;
-};
-
-function TodoCount({ count }: Count) {
+function TodoCount() {
+  const { itemLeftCount } = useTodoListAtom();
   return (
     <span className="todo-count">
-      <strong>{count}</strong>
+      <strong>{itemLeftCount}</strong>
       <span> </span>
       <span>items</span>
       <span> left</span>
