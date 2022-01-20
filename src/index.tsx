@@ -14,7 +14,9 @@ type Todo = {
   completed: boolean;
 };
 
-function App() {
+function useTodoList() {
+  // github.com/twinstae/realworld-react-redux/tree/main/todoMVC-react
+
   // https://todomvc.com/examples/react/#/
 
   const initialState = [
@@ -61,6 +63,26 @@ function App() {
   }
 
   const itemLeftCount = todoList.filter((todo) => !todo.completed).length;
+
+  return {
+    todoList,
+    addTodo,
+    deleteTodoItem,
+    completeTodoItem,
+    itemLeftCount,
+    clearCompleted,
+  };
+}
+
+function App() {
+  const {
+    todoList,
+    addTodo,
+    deleteTodoItem,
+    completeTodoItem,
+    itemLeftCount,
+    clearCompleted,
+  } = useTodoList();
 
   return (
     <section className="todoapp">
